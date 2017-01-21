@@ -28,7 +28,7 @@ public class EnemiesController : MonoBehaviour {
 
     void Spawn()
     {
-        if (GameService.GetInstance().IsAlive())
+        if (GameService.GetInstance().IsAlive() && !GameService.GetInstance().GetIsPaused())
         {
             float spawnPointX = getRandomXPosition();
             Vector2 position = new Vector2(spawnPointX, 12);

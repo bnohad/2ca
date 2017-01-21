@@ -11,6 +11,7 @@ public class Enemy : MonoBehaviour {
     private float speed;
 
     public bool isAlive;
+    private bool wasSpeedSet;
     public bool hasEnteredView;
 
 	// Use this for initialization
@@ -21,32 +22,48 @@ public class Enemy : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (IsAlive() && hasEnteredView)
-        {
-            if (GameService.GetInstance().IsObjectInTapArea(transform.localPosition, Input.touches))
+        if(GameService.GetInstance().IsAlive()) {
+            if (IsAlive() && hasEnteredView)
             {
-                Debug.Log("Enemy Dead");
-                IsAlive(false);
-                animator.SetTrigger("isDead");
+                if (GameService.GetInstance().IsObjectInTapArea(transform.localPosition, Input.touches))
+                {
+                    GameService.GetInstance().addToPoints(1);
+                    Debug.Log("Enemy Dead");
+                    IsAlive(false);
+                    animator.SetTrigger("isDead");
+                }
+                else if (!GameService.GetInstance().IsObjectInWorldView(gameObject))
+                {
+                    Destroy(gameObject);
+                    IsAlive(false);
+                    GameService.GetInstance().takeHit();
+                    Debug.Log("TOOK A HIT!");
+                }
+            }
+            else if (!hasEnteredView && GameService.GetInstance().IsObjectInWorldView(gameObject))
+            {
+                Debug.Log("IN VIEW");
+                hasEnteredView = true;
+            }
+
+
+            if (speed < GameService.GetInstance().GetGameSpeed())
+            {
+                wasSpeedSet = false;
+                speed = GameService.GetInstance().GetGameSpeed() + 1f;
+                SetSpeed(speed);
+                Debug.Log(string.Format("NEW SPEED {0}", speed));
             }
         }
-        else if (!GameService.GetInstance().IsObjectInWorldView(gameObject) && hasEnteredView)
+        else
         {
-            Destroy(gameObject);
+            //player dead
+            animator.speed = 0.2f;
+            wasSpeedSet = false;
+            SetSpeed(0.2f);
         }
-        else if (!hasEnteredView && GameService.GetInstance().IsObjectInWorldView(gameObject))
-        {
-            hasEnteredView = true;
-        }
-
-        if (speed > 3f)
-        {
-            speed = GameService.GetInstance().GetGameSpeed();
-            SetSpeed(speed);
-
-            Debug.Log(string.Format("NEW SPEED {0}", speed));
-        }
-	}
+    }
+        
 
 
 
@@ -76,7 +93,11 @@ public class Enemy : MonoBehaviour {
 
     public void SetSpeed(float speed)
     {
-        rb2d.velocity = new Vector2(0, -1 * speed);
+        if (!wasSpeedSet)
+        {
+            wasSpeedSet = true;
+            rb2d.velocity = new Vector2(0, -1 * speed);
+        }
     }
 
 }

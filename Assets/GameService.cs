@@ -11,10 +11,13 @@ public class GameService : MonoBehaviour {
 
     private bool isMenu;
     private bool isPaused;
+    private bool isGameover;
     private bool isAlive;
 
     private float gameSpeed;
     private int gameDiffuclty;
+    private int numOfKills;
+    private int numOfLives;
 
     private GameObject player;
     private GameObject[] mapObjects;
@@ -27,6 +30,11 @@ public class GameService : MonoBehaviour {
     public GameService()
     {
         InitGameInstance();
+    }
+
+    void OnGUI()
+    {
+        GUI.Label(new Rect(10, 10, 100, 20), string.Format("Score: {0}", numOfKills));
     }
 
 	// Use this for initialization
@@ -71,6 +79,31 @@ public class GameService : MonoBehaviour {
         //enemies = new ArrayList();
         
         InitMapObjects();
+    }
+
+    public void addToPoints(int points)
+    {
+        numOfKills += points;
+    }
+
+    public void takeHit()
+    {
+        if (IsAlive())
+        {
+            numOfLives -= 1;
+            Debug.Log(string.Format("NUM OF LIVES: {0}", numOfLives));
+            if (numOfLives == 0)
+            {
+                //show game over
+                IsAlive(false);
+            }
+        }
+        
+    }
+
+    public int GetNumOfLives()
+    {
+        return numOfLives;
     }
 
     public Vector2 TransformPixelToWorldPoint(Vector2 position)
@@ -119,10 +152,10 @@ public class GameService : MonoBehaviour {
     public bool IsObjectInWorldView(GameObject obj)
     {
         bool ret = false;
-        Vector2 objPos = obj.transform.localPosition;
+//        Vector2 objPos = ;
         //Debug.Log(string.Format("OBJECT POS: {0} {1}", objPos.x, objPos.y));
 
-        if (rightScreenSide.Contains(objPos) || leftScreenSide.Contains(objPos))
+        if (rightScreenSide.Contains(obj.transform.localPosition) || leftScreenSide.Contains(obj.transform.localPosition))
         {
             ret = true;
         }
@@ -152,12 +185,12 @@ public class GameService : MonoBehaviour {
 
     public bool IsTapRight(Touch[] touchPoints)
     {
-        return Input.GetKey("right") || IsTapInRect(rightScreenSide, touchPoints);
+        return Input.GetKeyDown("right") || IsTapInRect(rightScreenSide, touchPoints);
     }
 
     public bool IsTapLeft(Touch[] touchPoints)
     {
-        return Input.GetKey("left") || IsTapInRect(leftScreenSide, touchPoints);
+        return Input.GetKeyDown("left") || IsTapInRect(leftScreenSide, touchPoints);
     }
 
     private bool IsTapInRect(Rect rect, Touch[] touchPoints) 
@@ -186,9 +219,12 @@ public class GameService : MonoBehaviour {
 
     public void StartNewGame()
     {
+        numOfKills = 0;
+        numOfLives = 3;
         SetGameSpeed(3f);
         SetGameDiffuclty(1);
 
+        isGameover = false;
         IsAlive(true);
         SetIsPaused(false);
     }
