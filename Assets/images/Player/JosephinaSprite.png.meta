@@ -1,0 +1,191 @@
+fileFormatVersion: 2
+guid: d318b4a3d863e8642a62514deab4fcbe
+timeCreated: 1484987427
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: JosephinaSprite_0
+    21300002: JosephinaSprite_1
+    21300004: JosephinaSprite_2
+    21300006: JosephinaSprite_3
+    21300008: JosephinaSprite_4
+    21300010: JosephinaSprite_5
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: JosephinaSprite_0
+      rect:
+        serializedVersion: 2
+        x: 321
+        y: 651
+        width: 150
+        height: 225
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 61, y: 201}
+        - {x: 14, y: 225}
+        - {x: -31, y: 225}
+        - {x: -41, y: 223}
+        - {x: -75, y: 205}
+        - {x: -75, y: 35}
+        - {x: -59, y: 0}
+        - {x: 52, y: 0}
+        - {x: 75, y: 49}
+        - {x: 75, y: 144}
+    - name: JosephinaSprite_1
+      rect:
+        serializedVersion: 2
+        x: 612
+        y: 657
+        width: 135
+        height: 219
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -10.5, y: 219}
+        - {x: -67.5, y: 199}
+        - {x: -67.5, y: 88}
+        - {x: -64.5, y: 56}
+        - {x: -60.5, y: 47}
+        - {x: -50.5, y: 36}
+        - {x: -52.5, y: 10}
+        - {x: -51.5, y: 0}
+        - {x: 63.5, y: 0}
+        - {x: 67.5, y: 6}
+        - {x: 67.5, y: 211}
+        - {x: 33.5, y: 219}
+    - name: JosephinaSprite_2
+      rect:
+        serializedVersion: 2
+        x: 894
+        y: 651
+        width: 135
+        height: 219
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -10.5, y: 219}
+        - {x: -67.5, y: 199}
+        - {x: -67.5, y: 88}
+        - {x: -64.5, y: 56}
+        - {x: -60.5, y: 47}
+        - {x: -50.5, y: 36}
+        - {x: -52.5, y: 10}
+        - {x: -51.5, y: 0}
+        - {x: 63.5, y: 0}
+        - {x: 67.5, y: 6}
+        - {x: 67.5, y: 211}
+        - {x: 33.5, y: 219}
+    - name: JosephinaSprite_3
+      rect:
+        serializedVersion: 2
+        x: 1152
+        y: 648
+        width: 135
+        height: 219
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 22.5, y: 219}
+        - {x: -31.5, y: 219}
+        - {x: -66.5, y: 203}
+        - {x: -66.5, y: 68}
+        - {x: -64.5, y: 47}
+        - {x: -52.5, y: 1}
+        - {x: 62.5, y: 1}
+        - {x: 67.5, y: 26}
+        - {x: 67.5, y: 195}
+        - {x: 65.5, y: 205}
+    - name: JosephinaSprite_4
+      rect:
+        serializedVersion: 2
+        x: 1419
+        y: 651
+        width: 135
+        height: 213
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -27.5, y: 213}
+        - {x: -67.5, y: 194}
+        - {x: -67.5, y: 33}
+        - {x: -61.5, y: 1}
+        - {x: -54.5, y: 0}
+        - {x: 58.5, y: 0}
+        - {x: 67.5, y: 43}
+        - {x: 67.5, y: 190}
+        - {x: 33.5, y: 213}
+    - name: JosephinaSprite_5
+      rect:
+        serializedVersion: 2
+        x: 1665
+        y: 657
+        width: 135
+        height: 222
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 46.5, y: 222}
+        - {x: -17.5, y: 222}
+        - {x: -67.5, y: 201}
+        - {x: -67.5, y: 74}
+        - {x: -55.5, y: 0}
+        - {x: 54.5, y: 0}
+        - {x: 56.5, y: 16}
+        - {x: 67.5, y: 56}
+        - {x: 67.5, y: 217}
+    outline: []
+  spritePackingTag: Josephina
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
