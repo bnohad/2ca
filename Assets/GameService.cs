@@ -13,6 +13,7 @@ public class GameService : MonoBehaviour {
     private bool isPaused;
     private bool isGameover;
     private bool isAlive;
+    private bool wasNumOfKillesChanged;
 
     private float gameSpeed;
     private int gameDiffuclty;
@@ -53,12 +54,24 @@ public class GameService : MonoBehaviour {
         if (IsAlive())
         {
             SceneMovement.GetInstance().SetSpeed(gameSpeed);
+            updateGameDiffuclty();
         }
         else
         {
             SceneMovement.GetInstance().SetSpeed(0);
         }
 	}
+
+    private void updateGameDiffuclty()
+    {
+        int currDiffuclty = GetGameDiffuclty();
+
+        if (numOfKills % (gameDiffuclty * 5) == 0 && wasNumOfKillesChanged)
+        {
+            wasNumOfKillesChanged = false;
+            SetGameDiffuclty(currDiffuclty + 1);
+        }
+    }
 
     private void InitGameTapControl()
     {
@@ -83,6 +96,7 @@ public class GameService : MonoBehaviour {
 
     public void addToPoints(int points)
     {
+        wasNumOfKillesChanged = true;
         numOfKills += points;
     }
 
@@ -114,11 +128,6 @@ public class GameService : MonoBehaviour {
         ret = (Vector2)Camera.main.ViewportToWorldPoint(screenVector3);
 
         return ret;
-    }
-
-    public void SpawnNewEnemy()
-    {
-        //Enemy newEnemy = new Enemy();
     }
 
     private void InitGameInstance()
@@ -221,8 +230,8 @@ public class GameService : MonoBehaviour {
     {
         numOfKills = 0;
         numOfLives = 3;
-        SetGameSpeed(3f);
         SetGameDiffuclty(1);
+        SetGameSpeed(5f);
 
         isGameover = false;
         IsAlive(true);
@@ -241,6 +250,11 @@ public class GameService : MonoBehaviour {
 
     public float GetGameSpeed()
     {
+        return gameSpeed + gameSpeed * gameDiffuclty / 7;
+    }
+
+    public float GetSceneSpeed()
+    {
         return gameSpeed;
     }
 
@@ -253,7 +267,7 @@ public class GameService : MonoBehaviour {
         }
     }
 
-    public float GetGameDiffuclty()
+    public int GetGameDiffuclty()
     {
         return gameDiffuclty;
     }

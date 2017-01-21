@@ -30,6 +30,8 @@ public class Enemy : MonoBehaviour {
                     GameService.GetInstance().addToPoints(1);
                     Debug.Log("Enemy Dead");
                     IsAlive(false);
+                    wasSpeedSet = false;
+                    SetSpeed(GameService.GetInstance().GetSceneSpeed());
                     animator.SetTrigger("isDead");
                 }
                 else if (!GameService.GetInstance().IsObjectInWorldView(gameObject))
@@ -47,10 +49,10 @@ public class Enemy : MonoBehaviour {
             }
 
 
-            if (speed < GameService.GetInstance().GetGameSpeed())
+            if (speed < GameService.GetInstance().GetGameSpeed() && isAlive)
             {
                 wasSpeedSet = false;
-                speed = GameService.GetInstance().GetGameSpeed() + 1f;
+                speed = GameService.GetInstance().GetGameSpeed();
                 SetSpeed(speed);
                 Debug.Log(string.Format("NEW SPEED {0}", speed));
             }
