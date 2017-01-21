@@ -67,6 +67,7 @@
     <Compile Include="Assets\EnemiesController.cs" />
     <Compile Include="Assets\Enemy.cs" />
     <Compile Include="Assets\GameService.cs" />
+    <Compile Include="Assets\GunsScript.cs" />
     <Compile Include="Assets\LivesController.cs" />
     <Compile Include="Assets\PlayerController.cs" />
     <Compile Include="Assets\SceneMovement.cs" />
