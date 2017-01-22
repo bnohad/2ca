@@ -72,6 +72,7 @@
     <Compile Include="Assets\LivesController.cs" />
     <Compile Include="Assets\PlayerController.cs" />
     <Compile Include="Assets\SceneMovement.cs" />
+    <Compile Include="Assets\StartButton.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2013\UnityVS.CSharp.targets" />
 </Project>

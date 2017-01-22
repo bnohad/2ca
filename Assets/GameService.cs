@@ -25,6 +25,15 @@ public class GameService : MonoBehaviour {
     private GameObject[] mapObjects;
 
     private GameObject goodText;
+    private GameObject menuScreen;
+    private GameObject startBtn;
+    private GameObject creditsBtn;
+
+    private GUIStyle scoreStyle;
+    private GUIStyle gameoverStyle;
+    private Rect scoreRect;
+    private Rect gameoverRect;
+
 
     //private ArrayList enemies;
 
@@ -38,17 +47,29 @@ public class GameService : MonoBehaviour {
 
     void OnGUI()
     {
-        GUI.Label(new Rect(10, 10, 100, 20), string.Format("Score: {0}", numOfKills));
+        if (IsAlive())
+        {
+            GUI.Label(scoreRect, string.Format("Score: {0}", numOfKills), scoreStyle);
+        }
+        else if (isGameover)
+        {
+            GUI.Label(gameoverRect, string.Format("Score: {0}", numOfKills), gameoverStyle);
+        }
+        
     }
 
 	// Use this for initialization
 	void Start () {
-      
-        
+
+        initGUIStyles();
         InitGameObjects();
         InitGameTapControl();
 
-        StartNewGame();
+        IsAlive(false);
+        isGameover = true;
+
+        toggleMenu(true);
+        //StartNewGame();
         //SpawnNewEnemy();
 	}
 	
@@ -64,6 +85,24 @@ public class GameService : MonoBehaviour {
             SceneMovement.GetInstance().SetSpeed(0);
         }
 	}
+
+    private void initGUIStyles()
+    {
+        scoreStyle = new GUIStyle();
+        scoreStyle.fontSize = 20;
+        scoreStyle.normal.textColor = Color.black;
+        //style.alignment = TextAnchor.MiddleCenter;
+        scoreStyle.fontStyle = FontStyle.Bold;
+
+        gameoverStyle = new GUIStyle();
+        gameoverStyle.fontSize = 40;
+        gameoverStyle.normal.textColor = Color.black;
+        gameoverStyle.alignment = TextAnchor.MiddleCenter;
+        gameoverStyle.fontStyle = FontStyle.Bold;
+
+        scoreRect = new Rect(10, 10, 100, 20);
+        gameoverRect = new Rect(0, 0, Screen.width, Screen.height);
+    }
 
     private void updateGameDiffuclty()
     {
@@ -95,6 +134,10 @@ public class GameService : MonoBehaviour {
     {
         player = GameObject.Find(PLAYER_OBJECT);
         goodText = GameObject.Find("GoodText");
+        menuScreen = GameObject.Find("MenuScreen");
+        startBtn = GameObject.Find("StartButton");
+        creditsBtn = GameObject.Find("CreditsButton");
+
         goodText.SetActive(false);
         //enemies = new ArrayList();
         
@@ -271,12 +314,29 @@ public class GameService : MonoBehaviour {
         levelUpMultiplyer = 5;
 
         isGameover = false;
-        IsAlive(true);
         SetIsPaused(false);
+        IsAlive(true);
+
+        toggleMenu(false);
+        EnemiesController.GetInstance().InitNewGame();
+    }
+
+    private void toggleMenu(bool toggle)
+    {
+        menuScreen.SetActive(toggle);
+        startBtn.SetActive(toggle);
+        creditsBtn.SetActive(toggle);
+        player.SetActive(!toggle);
     }
 
     public void IsAlive(bool status)
     {
+        if (!status)
+        {
+            isGameover = true;
+            toggleMenu(true);
+        }
+
         isAlive = status;
     }
 
