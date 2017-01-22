@@ -22,53 +22,105 @@ public class Enemy : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if(GameService.GetInstance().IsAlive()) {
-            if (IsAlive() && hasEnteredView)
+        if (GameService.GetInstance().IsAlive())
+        {
+            ApplyGameSpeedToEnemy();
+
+            if (IsAlive() && hasEnteredView && !GameService.GetInstance().IsObjectInWorldView(gameObject))
             {
-                if (GameService.GetInstance().IsObjectInTapArea(transform.localPosition, Input.touches))
-                {
-                    GameService.GetInstance().addToPoints(1);
-                    Debug.Log("Enemy Dead");
-                    IsAlive(false);
-                    wasSpeedSet = false;
-                    SetSpeed(GameService.GetInstance().GetSceneSpeed());
-                    animator.SetTrigger("isDead");
-                }
-                else if (!GameService.GetInstance().IsObjectInWorldView(gameObject))
-                {
-                    Destroy(gameObject);
-                    IsAlive(false);
-                    GameService.GetInstance().takeHit();
-                    Debug.Log("TOOK A HIT!");
-                }
+                HitPlayer();
             }
             else if (!hasEnteredView && GameService.GetInstance().IsObjectInWorldView(gameObject))
             {
-                Debug.Log("IN VIEW");
                 hasEnteredView = true;
             }
-
-
-            if (speed < GameService.GetInstance().GetGameSpeed() && isAlive)
+            else if (!IsAlive() && hasEnteredView && !GameService.GetInstance().IsObjectInWorldView(gameObject))
             {
-                wasSpeedSet = false;
-                speed = GameService.GetInstance().GetGameSpeed();
-                SetSpeed(speed);
-                Debug.Log(string.Format("NEW SPEED {0}", speed));
+                Destroy(gameObject);
             }
         }
-        else
+        //    if (IsAlive() && hasEnteredView)
+        //    {
+        //        if (GameService.GetInstance().IsObjectInTapArea(gameObject, Input.touches))
+        //        {
+        //            if (EnemiesController.GetInstance().IsNearestEnemy(gameObject))
+        //            {
+        //                if (!EnemiesController.GetInstance().DidLastShotHit(gameObject))
+        //                {
+        //                    EnemiesController.GetInstance().SetLastShotHit(gameObject, true);
+        //                    IsAlive(false);
+        //                    wasSpeedSet = false;
+        //                    SetSpeed(GameService.GetInstance().GetSceneSpeed());
+        //                    GameService.GetInstance().addToPoints(1);
+        //                    Debug.Log("Enemy Dead");
+        //                    animator.SetTrigger("isDead");
+        //                    EnemiesController.GetInstance().SetLastShotHit(gameObject, false);
+        //                }
+        //            }
+        //        }
+        //        else if (!GameService.GetInstance().IsObjectInWorldView(gameObject))
+        //        {
+        //            Destroy(gameObject);
+        //            IsAlive(false);
+        //            GameService.GetInstance().takeHit();
+        //            Debug.Log("TOOK A HIT!");
+        //        }
+        //    }
+        //    else if (!hasEnteredView && GameService.GetInstance().IsObjectInWorldView(gameObject))
+        //    {
+        //        Debug.Log("IN VIEW");
+        //        hasEnteredView = true;
+        //    }
+        //    else if (!GameService.GetInstance().IsObjectInWorldView(gameObject) && !IsAlive())
+        //    {
+        //        Destroy(gameObject);
+        //    }
+
+
+        //    if (speed < GameService.GetInstance().GetGameSpeed() && isAlive)
+        //    {
+        //        wasSpeedSet = false;
+        //        speed = GameService.GetInstance().GetGameSpeed();
+        //        SetSpeed(speed);
+        //        Debug.Log(string.Format("NEW SPEED {0}", speed));
+        //    }
+        //}
+        //else
+        //{
+        //    //player dead
+        //    animator.speed = 0.2f;
+        //    wasSpeedSet = false;
+        //    SetSpeed(0.2f);
+        //}
+    }
+
+    public void Kill()
+    {
+        IsAlive(false);
+        wasSpeedSet = false;
+        SetSpeed(GameService.GetInstance().GetSceneSpeed());
+        //GameService.GetInstance().addToPoints(1);
+        Debug.Log("Enemy Dead");
+        animator.SetTrigger("isDead");
+    }
+
+    public void HitPlayer()
+    {
+        Destroy(gameObject);
+        IsAlive(false);
+        GameService.GetInstance().takeHit();
+    }
+
+    public void ApplyGameSpeedToEnemy()
+    {
+        if (speed < GameService.GetInstance().GetGameSpeed() && isAlive)
         {
-            //player dead
-            animator.speed = 0.2f;
             wasSpeedSet = false;
-            SetSpeed(0.2f);
+            speed = GameService.GetInstance().GetGameSpeed();
+            SetSpeed(speed);
         }
     }
         
-
-
-
     private void InitEnemy()
     {
         if (instance == null)

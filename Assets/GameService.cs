@@ -172,21 +172,26 @@ public class GameService : MonoBehaviour {
         return ret;
     }
 
-    public bool IsObjectInTapArea(Vector2 objectPos, Touch[] touchPoints)
+    public bool IsObjectInTapArea(GameObject obj, Touch[] touchPoints)
     {
         bool ret = false;
 
-        if (IsTapRight(touchPoints) && rightScreenSide.Contains(objectPos))
+        if (obj == null)
+        {
+            return ret;
+        }
+
+        if (IsTapRight(touchPoints) && rightScreenSide.Contains(obj.transform.localPosition))
         {
             ret = true;
         }
-        else if (IsTapLeft(touchPoints) && leftScreenSide.Contains(objectPos))
+        else if (IsTapLeft(touchPoints) && leftScreenSide.Contains(obj.transform.localPosition))
         {
             ret = true;
         }
         else if(IsTapLeft(touchPoints) || IsTapRight(touchPoints))
         {
-            Debug.Log(string.Format("NOT IN TOUCH AREA {0} {1}", objectPos.x, objectPos.y));
+            //Debug.Log(string.Format("NOT IN TOUCH AREA {0} {1}", objectPos.x, objectPos.y));
         }
 
         return ret;
@@ -200,6 +205,30 @@ public class GameService : MonoBehaviour {
     public bool IsTapLeft(Touch[] touchPoints)
     {
         return Input.GetKeyDown("left") || IsTapInRect(leftScreenSide, touchPoints);
+    }
+
+    public bool IsObjectInRight(GameObject obj)
+    {
+        bool ret = false;
+
+        if (rightScreenSide.Contains(obj.transform.localPosition))
+        {
+            ret = true;
+        }
+
+        return ret;
+    }
+
+    public bool IsObjectInLeft(GameObject obj)
+    {
+        bool ret = false;
+
+        if (leftScreenSide.Contains(obj.transform.localPosition))
+        {
+            ret = true;
+        }
+
+        return ret;
     }
 
     private bool IsTapInRect(Rect rect, Touch[] touchPoints) 
@@ -250,7 +279,7 @@ public class GameService : MonoBehaviour {
 
     public float GetGameSpeed()
     {
-        return gameSpeed + gameSpeed * gameDiffuclty / 7;
+        return gameSpeed + gameSpeed * gameDiffuclty / 15;
     }
 
     public float GetSceneSpeed()

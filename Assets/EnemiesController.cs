@@ -3,25 +3,37 @@ using System.Collections;
 
 public class EnemiesController : MonoBehaviour {
 
-    //public GameObject enemy;
+    public static EnemiesController instance;
     public GameObject[] enemies;
+
+    //public GameObject enemy;
     private float spawnTime = 3f;
     private float spawnDelay = 3f;
     private int lastDiffuclty;
-    private bool wasSpawnDone;
+    private int numOfCurrSpwans;
+
+    private bool didLastShotHitRight;
+    private bool didLastShotHitLeft;
+
     //private Transform[] spawnPoints;
 
 	// Use this for initialization
 	void Start () {
         enemies = GameObject.FindGameObjectsWithTag("enemy");
         lastDiffuclty = 1;
-        wasSpawnDone = true;
         foreach (GameObject currEnemy in enemies)
         {
             currEnemy.SetActive(false);
         }
 
         Debug.Log(string.Format("NUM OF ENEMIES IS {0}",enemies.Length));
+
+        if (instance == null)
+        {
+            instance = this;
+        }
+
+        numOfCurrSpwans = 0;
         //InvokeRepeating("Spawn", spawnTime, spawnTime);
 	}
 	
@@ -33,12 +45,27 @@ public class EnemiesController : MonoBehaviour {
             spawnDelay = spawnTime - lastDiffuclty * 0.1f;
         }
 
-        if (wasSpawnDone)
+        if (numOfCurrSpwans < lastDiffuclty)
         {
-            wasSpawnDone = false;
+            numOfCurrSpwans++;
             StartCoroutine(waitAndSpawn());
         }
+
+        //kill nearest enemy
+        GameObject nearestEnemy = GetNearestEnemy(Input.touches);
+
+        if (GameService.GetInstance().IsObjectInTapArea(nearestEnemy, Input.touches))
+        {
+            nearestEnemy.GetComponent<Enemy>().Kill();
+            GameService.GetInstance().addToPoints(1);
+            numOfCurrSpwans--;
+        }
 	}
+
+    public static EnemiesController GetInstance()
+    {
+        return instance;
+    }
 
     private void Spawn()
     {
@@ -48,8 +75,29 @@ public class EnemiesController : MonoBehaviour {
             Vector2 position = new Vector2(spawnPointX, 12);
             GameObject enemyObj = (GameObject)Instantiate(enemies[RandomEnemy()], position, Quaternion.identity);
             enemyObj.SetActive(true);
-            wasSpawnDone = true;
+            //numOfCurrSpwans--;
         }
+    }
+
+    public GameObject GetNearestEnemy(Touch[] touches)
+    {
+        GameObject nearestEnemy = null;
+
+        Debug.Log(string.Format("NUM OF ENEMIES ON SCREEN {0}", GameObject.FindGameObjectsWithTag("enemy").Length));
+
+            foreach (GameObject currEnemy in GameObject.FindGameObjectsWithTag("enemy"))
+            {
+                if (nearestEnemy == null && currEnemy.GetComponent<Enemy>().IsAlive() && GameService.GetInstance().IsObjectInTapArea(currEnemy, touches))
+                {
+                    nearestEnemy = currEnemy;
+                }
+                else if (currEnemy != null && nearestEnemy != null && !currEnemy.Equals(nearestEnemy) && GameService.GetInstance().IsObjectInTapArea(currEnemy, touches) && nearestEnemy.transform.localPosition.y > currEnemy.transform.localPosition.y && currEnemy.GetComponent<Enemy>().IsAlive())
+                {
+                    nearestEnemy = currEnemy;
+                }
+            }
+
+        return nearestEnemy;
     }
 
     IEnumerator waitAndSpawn()
@@ -67,11 +115,11 @@ public class EnemiesController : MonoBehaviour {
 
         if (Random.Range(0, 1f) >= 0.5f)
         {
-            randomX = Random.Range(Screen.width * 0.6f, Screen.width);
+            randomX = Random.Range(Screen.width * 0.6f, Screen.width * 0.95f);
         }
         else
         {
-            randomX = Random.Range(0, Screen.width * 0.4f);
+            randomX = Random.Range(0.05f, Screen.width * 0.4f);
         }
 
         randomPos3 = Camera.main.ScreenToWorldPoint(new Vector3(randomX,0,0));
