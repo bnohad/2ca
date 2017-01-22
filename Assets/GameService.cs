@@ -10,6 +10,7 @@ public class GameService : MonoBehaviour {
     private static GameService instance;
 
     private bool isMenu;
+    private bool isCredits;
     private bool isPaused;
     private bool isGameover;
     private bool isAlive;
@@ -25,9 +26,15 @@ public class GameService : MonoBehaviour {
     private GameObject[] mapObjects;
 
     private GameObject goodText;
-    private GameObject menuScreen;
+    private GameObject gameoverScreen;
     private GameObject startBtn;
     private GameObject creditsBtn;
+
+    private GameObject menuScreen;
+    private GameObject menuStartBtn;
+    private GameObject menuCreditsBtn;
+
+    private GameObject creditsScreen;
 
     private GUIStyle scoreStyle;
     private GUIStyle gameoverStyle;
@@ -55,7 +62,6 @@ public class GameService : MonoBehaviour {
         {
             GUI.Label(gameoverRect, string.Format("Score: {0}", numOfKills), gameoverStyle);
         }
-        
     }
 
 	// Use this for initialization
@@ -66,7 +72,9 @@ public class GameService : MonoBehaviour {
         InitGameTapControl();
 
         IsAlive(false);
-        isGameover = true;
+        isMenu = true;
+        isGameover = false;
+        isCredits = false;
 
         toggleMenu(true);
         //StartNewGame();
@@ -101,7 +109,7 @@ public class GameService : MonoBehaviour {
         gameoverStyle.fontStyle = FontStyle.Bold;
 
         scoreRect = new Rect(10, 10, 100, 20);
-        gameoverRect = new Rect(0, 0, Screen.width, Screen.height);
+        gameoverRect = new Rect(0, Screen.height/2, Screen.width/4, Screen.height/2);
     }
 
     private void updateGameDiffuclty()
@@ -113,7 +121,11 @@ public class GameService : MonoBehaviour {
             levelUpMultiplyer++;
             wasNumOfKillesChanged = false;
             SetGameDiffuclty(currDiffuclty + 1);
-            goodText.SetActive(true);
+
+            if (numOfKills > 0)
+            {
+                goodText.SetActive(true);
+            }
         }
     }
 
@@ -134,9 +146,16 @@ public class GameService : MonoBehaviour {
     {
         player = GameObject.Find(PLAYER_OBJECT);
         goodText = GameObject.Find("GoodText");
-        menuScreen = GameObject.Find("MenuScreen");
-        startBtn = GameObject.Find("StartButton");
-        creditsBtn = GameObject.Find("CreditsButton");
+
+        gameoverScreen = GameObject.Find("MenuScreen");
+        //startBtn = GameObject.Find("StartButton");
+        //creditsBtn = GameObject.Find("CreditsButton");
+
+        menuScreen = GameObject.Find("OpenScreen");
+        //menuStartBtn = GameObject.Find("StartButtonOpen");
+        //menuCreditsBtn = GameObject.Find("CreditsButtonOpen");
+
+        creditsScreen = GameObject.Find("CreditsScreen");
 
         goodText.SetActive(false);
         //enemies = new ArrayList();
@@ -314,6 +333,9 @@ public class GameService : MonoBehaviour {
         levelUpMultiplyer = 5;
 
         isGameover = false;
+        isMenu = false;
+        isCredits = false;
+
         SetIsPaused(false);
         IsAlive(true);
 
@@ -323,9 +345,37 @@ public class GameService : MonoBehaviour {
 
     private void toggleMenu(bool toggle)
     {
-        menuScreen.SetActive(toggle);
-        startBtn.SetActive(toggle);
-        creditsBtn.SetActive(toggle);
+        if (isMenu)
+        {
+            menuScreen.SetActive(toggle);
+            gameoverScreen.SetActive(false);
+            creditsScreen.SetActive(false);
+            //menuStartBtn.SetActive(toggle);
+            //menuCreditsBtn.SetActive(toggle);
+        }
+        else if (isGameover)
+        {
+            gameoverScreen.SetActive(toggle);
+            //startBtn.SetActive(toggle);
+            //creditsBtn.SetActive(toggle);
+        }
+        else if (isCredits)
+        {
+            creditsScreen.SetActive(toggle);
+            gameoverScreen.SetActive(false);
+            menuScreen.SetActive(false);
+        }
+        else
+        {
+            menuScreen.SetActive(toggle);
+            //menuStartBtn.SetActive(toggle);
+            //menuCreditsBtn.SetActive(toggle);
+            creditsScreen.SetActive(toggle);
+            gameoverScreen.SetActive(toggle);
+            //startBtn.SetActive(toggle);
+            //creditsBtn.SetActive(toggle);
+        }
+
         player.SetActive(!toggle);
     }
 
@@ -392,5 +442,14 @@ public class GameService : MonoBehaviour {
     public void SetIsPaused(bool state)
     {
         isPaused = state;
+    }
+
+    public void ShowCredits()
+    {
+        isCredits = true;
+        isMenu = false;
+        isGameover = false;
+
+        toggleMenu(true);
     }
 }

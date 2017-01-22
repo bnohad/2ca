@@ -64,6 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\BackgroundScript.cs" />
+    <Compile Include="Assets\CreditsButton.cs" />
     <Compile Include="Assets\EnemiesController.cs" />
     <Compile Include="Assets\Enemy.cs" />
     <Compile Include="Assets\GameService.cs" />
