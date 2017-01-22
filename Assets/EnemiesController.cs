@@ -41,6 +41,7 @@ public class EnemiesController : MonoBehaviour {
         numOfCurrSpwans = 0;
         numOfTotalSpwans = 1;
         lastDiffuclty = 1;
+        spawnDelay = spawnTime;
 
         foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("enemy"))
         {
@@ -57,7 +58,7 @@ public class EnemiesController : MonoBehaviour {
                 lastDiffuclty = GameService.GetInstance().GetGameDiffuclty();
                 spawnDelay = spawnTime - lastDiffuclty * 0.05f;
 
-                if (lastDiffuclty % 5 == 0 && numOfTotalSpwans < 10)
+                if (lastDiffuclty % 3 == 0 && numOfTotalSpwans < 10)
                 {
                     numOfTotalSpwans++;
                 }

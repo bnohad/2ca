@@ -304,15 +304,15 @@ public class GameService : MonoBehaviour {
     {
         bool ret = false;
 
-        if (touchPoints.Length > 0)
+        if (touchPoints.Length == 1 && touchPoints[0].phase == TouchPhase.Began)
         {
-            foreach (Touch point in touchPoints)
-            {
-                if(rect.Contains(Camera.main.ScreenToWorldPoint(point.position))) {
+            //foreach (Touch point in touchPoints)
+            //{
+                if(rect.Contains(Camera.main.ScreenToWorldPoint(touchPoints[0].position))) {
                     ret = true;
-                    break;
+               //     break;
                 }
-            }
+            //}
         }
 
         return ret;
@@ -399,9 +399,9 @@ public class GameService : MonoBehaviour {
     {
         int multiplyer = gameDiffuclty;
 
-        if (gameDiffuclty > 10)
+        if (gameDiffuclty > 20)
         {
-            multiplyer = 10;
+            multiplyer = 20;
         }
 
         return gameSpeed + gameSpeed * multiplyer* 0.05f;

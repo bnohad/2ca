@@ -56,59 +56,6 @@ public class Enemy : MonoBehaviour {
                 SetSpeed(0);
             }
         }
-        //    if (IsAlive() && hasEnteredView)
-        //    {
-        //        if (GameService.GetInstance().IsObjectInTapArea(gameObject, Input.touches))
-        //        {
-        //            if (EnemiesController.GetInstance().IsNearestEnemy(gameObject))
-        //            {
-        //                if (!EnemiesController.GetInstance().DidLastShotHit(gameObject))
-        //                {
-        //                    EnemiesController.GetInstance().SetLastShotHit(gameObject, true);
-        //                    IsAlive(false);
-        //                    wasSpeedSet = false;
-        //                    SetSpeed(GameService.GetInstance().GetSceneSpeed());
-        //                    GameService.GetInstance().addToPoints(1);
-        //                    Debug.Log("Enemy Dead");
-        //                    animator.SetTrigger("isDead");
-        //                    EnemiesController.GetInstance().SetLastShotHit(gameObject, false);
-        //                }
-        //            }
-        //        }
-        //        else if (!GameService.GetInstance().IsObjectInWorldView(gameObject))
-        //        {
-        //            Destroy(gameObject);
-        //            IsAlive(false);
-        //            GameService.GetInstance().takeHit();
-        //            Debug.Log("TOOK A HIT!");
-        //        }
-        //    }
-        //    else if (!hasEnteredView && GameService.GetInstance().IsObjectInWorldView(gameObject))
-        //    {
-        //        Debug.Log("IN VIEW");
-        //        hasEnteredView = true;
-        //    }
-        //    else if (!GameService.GetInstance().IsObjectInWorldView(gameObject) && !IsAlive())
-        //    {
-        //        Destroy(gameObject);
-        //    }
-
-
-        //    if (speed < GameService.GetInstance().GetGameSpeed() && isAlive)
-        //    {
-        //        wasSpeedSet = false;
-        //        speed = GameService.GetInstance().GetGameSpeed();
-        //        SetSpeed(speed);
-        //        Debug.Log(string.Format("NEW SPEED {0}", speed));
-        //    }
-        //}
-        //else
-        //{
-        //    //player dead
-        //    animator.speed = 0.2f;
-        //    wasSpeedSet = false;
-        //    SetSpeed(0.2f);
-        //}
     }
 
     public void Kill()
