@@ -19,9 +19,12 @@ public class GameService : MonoBehaviour {
     private int gameDiffuclty;
     private int numOfKills;
     private int numOfLives;
+    private int levelUpMultiplyer;
 
     private GameObject player;
     private GameObject[] mapObjects;
+
+    private GameObject goodText;
 
     //private ArrayList enemies;
 
@@ -66,10 +69,12 @@ public class GameService : MonoBehaviour {
     {
         int currDiffuclty = GetGameDiffuclty();
 
-        if (numOfKills % (gameDiffuclty * 5) == 0 && wasNumOfKillesChanged)
+        if (numOfKills % (currDiffuclty * levelUpMultiplyer) == 0 && wasNumOfKillesChanged)
         {
+            levelUpMultiplyer++;
             wasNumOfKillesChanged = false;
             SetGameDiffuclty(currDiffuclty + 1);
+            goodText.SetActive(true);
         }
     }
 
@@ -89,6 +94,8 @@ public class GameService : MonoBehaviour {
     private void InitGameObjects()
     {
         player = GameObject.Find(PLAYER_OBJECT);
+        goodText = GameObject.Find("GoodText");
+        goodText.SetActive(false);
         //enemies = new ArrayList();
         
         InitMapObjects();
@@ -261,6 +268,7 @@ public class GameService : MonoBehaviour {
         numOfLives = 3;
         SetGameDiffuclty(1);
         SetGameSpeed(5f);
+        levelUpMultiplyer = 5;
 
         isGameover = false;
         IsAlive(true);
@@ -279,7 +287,14 @@ public class GameService : MonoBehaviour {
 
     public float GetGameSpeed()
     {
-        return gameSpeed + gameSpeed * gameDiffuclty / 15;
+        int multiplyer = gameDiffuclty;
+
+        if (gameDiffuclty > 10)
+        {
+            multiplyer = 10;
+        }
+
+        return gameSpeed + gameSpeed * multiplyer* 0.05f;
     }
 
     public float GetSceneSpeed()

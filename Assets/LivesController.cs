@@ -39,14 +39,14 @@ public class LivesController : MonoBehaviour {
                 Animator currAnimator = lives[i].GetComponent<Animator>();
                 currAnimator.SetTrigger("isLost");
 
-                StartCoroutine(wait(lives[i].GetComponent<Animation>(), lives[i]));
+                StartCoroutine(wait(lives[i]));
 
                 //lives[i].SetActive(false);
             }
         }
     }
 
-    IEnumerator wait(Animation animation, GameObject obj)
+    IEnumerator wait(GameObject obj)
     {
         print(Time.time);
         yield return new WaitForSeconds(0.8f);

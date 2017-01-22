@@ -11,6 +11,7 @@ public class EnemiesController : MonoBehaviour {
     private float spawnDelay = 3f;
     private int lastDiffuclty;
     private int numOfCurrSpwans;
+    private int numOfTotalSpwans;
 
     private bool didLastShotHitRight;
     private bool didLastShotHitLeft;
@@ -34,6 +35,7 @@ public class EnemiesController : MonoBehaviour {
         }
 
         numOfCurrSpwans = 0;
+        numOfTotalSpwans = 1;
         //InvokeRepeating("Spawn", spawnTime, spawnTime);
 	}
 	
@@ -42,10 +44,15 @@ public class EnemiesController : MonoBehaviour {
         if (GameService.GetInstance().GetGameDiffuclty() != lastDiffuclty)
         {
             lastDiffuclty = GameService.GetInstance().GetGameDiffuclty();
-            spawnDelay = spawnTime - lastDiffuclty * 0.1f;
+            spawnDelay = spawnTime - lastDiffuclty * 0.05f;
+
+            if (lastDiffuclty % 5 == 0 && numOfTotalSpwans < 10)
+            {
+                numOfTotalSpwans++;
+            }
         }
 
-        if (numOfCurrSpwans < lastDiffuclty)
+        if (numOfCurrSpwans < numOfTotalSpwans)
         {
             numOfCurrSpwans++;
             StartCoroutine(waitAndSpawn());
@@ -58,7 +65,7 @@ public class EnemiesController : MonoBehaviour {
         {
             nearestEnemy.GetComponent<Enemy>().Kill();
             GameService.GetInstance().addToPoints(1);
-            numOfCurrSpwans--;
+            //numOfCurrSpwans--;
         }
 	}
 
@@ -75,7 +82,7 @@ public class EnemiesController : MonoBehaviour {
             Vector2 position = new Vector2(spawnPointX, 12);
             GameObject enemyObj = (GameObject)Instantiate(enemies[RandomEnemy()], position, Quaternion.identity);
             enemyObj.SetActive(true);
-            //numOfCurrSpwans--;
+            numOfCurrSpwans--;
         }
     }
 
@@ -102,9 +109,7 @@ public class EnemiesController : MonoBehaviour {
 
     IEnumerator waitAndSpawn()
     {
-        print(Time.time);
         yield return new WaitForSeconds(spawnDelay);
-        print(Time.time);
         Spawn();
     }
 
@@ -115,11 +120,11 @@ public class EnemiesController : MonoBehaviour {
 
         if (Random.Range(0, 1f) >= 0.5f)
         {
-            randomX = Random.Range(Screen.width * 0.6f, Screen.width * 0.95f);
+            randomX = Random.Range(Screen.width * 0.55f, Screen.width * 0.95f);
         }
         else
         {
-            randomX = Random.Range(0.05f, Screen.width * 0.4f);
+            randomX = Random.Range(0.05f, Screen.width * 0.45f);
         }
 
         randomPos3 = Camera.main.ScreenToWorldPoint(new Vector3(randomX,0,0));

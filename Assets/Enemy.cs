@@ -39,6 +39,23 @@ public class Enemy : MonoBehaviour {
                 Destroy(gameObject);
             }
         }
+        else
+        {
+            //player dead
+            if (IsAlive())
+            {
+                animator.speed = 0.2f;
+                wasSpeedSet = false;
+                SetSpeed(0.2f);
+            }
+            else
+            {
+                //player & enemy dead
+                //animator.speed = 0;
+                wasSpeedSet = false;
+                SetSpeed(0);
+            }
+        }
         //    if (IsAlive() && hasEnteredView)
         //    {
         //        if (GameService.GetInstance().IsObjectInTapArea(gameObject, Input.touches))
@@ -102,13 +119,14 @@ public class Enemy : MonoBehaviour {
         //GameService.GetInstance().addToPoints(1);
         Debug.Log("Enemy Dead");
         animator.SetTrigger("isDead");
+        GetComponent<SpriteRenderer>().sortingOrder = 0;
     }
 
     public void HitPlayer()
     {
-        Destroy(gameObject);
-        IsAlive(false);
         GameService.GetInstance().takeHit();
+        IsAlive(false);
+        Destroy(gameObject);
     }
 
     public void ApplyGameSpeedToEnemy()
