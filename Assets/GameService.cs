@@ -326,7 +326,6 @@ public class GameService : MonoBehaviour {
 
     public void StartNewGame()
     {
-        numOfKills = 0;
         numOfLives = 3;
         SetGameDiffuclty(1);
         SetGameSpeed(5f);
@@ -341,6 +340,8 @@ public class GameService : MonoBehaviour {
 
         toggleMenu(false);
         EnemiesController.GetInstance().InitNewGame();
+        
+        numOfKills = 0;
     }
 
     private void toggleMenu(bool toggle)
