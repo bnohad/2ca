@@ -96,6 +96,12 @@ public class Enemy : MonoBehaviour {
         animator = GetComponent<Animator>();
         rb2d = GetComponent<Rigidbody2D>();
 
+        if (Random.Range(0, 1f) >= 0.5f)
+        {
+            Debug.Log("ENEMY FLIPPED");
+            GetComponent<SpriteRenderer>().flipX = true;
+        }
+
         IsAlive(true);
         hasEnteredView = false;
     }
