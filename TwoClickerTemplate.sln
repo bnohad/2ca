@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwoClickerTemplate.CSharp", "TwoClickerTemplate.CSharp.csproj", "{62F92248-A60E-041D-A3A8-EC804DEB0057}"
+# Visual Studio 2015
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwoClickerTemplate", "TwoClickerTemplate.csproj", "{F2CF9489-E906-D09A-76CA-603D15B8E0B9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -9,10 +9,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{62F92248-A60E-041D-A3A8-EC804DEB0057}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{62F92248-A60E-041D-A3A8-EC804DEB0057}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{62F92248-A60E-041D-A3A8-EC804DEB0057}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{62F92248-A60E-041D-A3A8-EC804DEB0057}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2CF9489-E906-D09A-76CA-603D15B8E0B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2CF9489-E906-D09A-76CA-603D15B8E0B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2CF9489-E906-D09A-76CA-603D15B8E0B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2CF9489-E906-D09A-76CA-603D15B8E0B9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
