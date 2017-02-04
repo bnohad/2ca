@@ -23,6 +23,7 @@ public class GameService : MonoBehaviour {
     private int levelUpMultiplyer;
 
     private GameObject player;
+    private GameObject playerHit;
     private GameObject[] mapObjects;
 
     private GameObject goodText;
@@ -155,12 +156,13 @@ public class GameService : MonoBehaviour {
     private void InitGameObjects()
     {
         player = GameObject.Find(PLAYER_OBJECT);
+        playerHit = GameObject.Find("Hit");
+
         goodText = GameObject.Find("GoodText");
 
         gameoverScreen = GameObject.Find("MenuScreen");
 
         pauseScreen = GameObject.Find("PauseScreen");
-    //    pauseBackground = GameObject.Find("PauseBackground");
         pauseButton = GameObject.Find("PauseButton");
         continueButton = GameObject.Find("ContinueButton");
 
@@ -168,9 +170,41 @@ public class GameService : MonoBehaviour {
         creditsScreen = GameObject.Find("CreditsScreen");
 
         goodText.SetActive(false);
-        //enemies = new ArrayList();
-        
+        //playerHit.SetActive(false);
+
+        playerHit.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
+
         InitMapObjects();
+    }
+
+    IEnumerator FadeObject(GameObject obj, bool fadeAway)
+    {
+        //obj.SetActive(true); ;
+
+        // fade from opaque to transparent
+        if (fadeAway)
+        {
+            // loop over X second backwards
+            for (float i = 0.5f; i >= 0; i -= Time.deltaTime)
+            {
+                // set color with i as alpha
+                obj.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, i);
+                //img.color = new Color(1, 1, 1, i);
+                yield return null;
+            }
+        }
+        // fade from transparent to opaque
+        else
+        {
+            // loop over X second
+            for (float i = 0; i <= 0.5f; i += Time.deltaTime)
+            {
+                // set color with i as alpha
+                obj.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, i);
+                //img.color = new Color(1, 1, 1, i);
+                yield return null;
+            }
+        }
     }
 
     public void addToPoints(int points)
@@ -183,6 +217,7 @@ public class GameService : MonoBehaviour {
     {
         if (IsAlive())
         {
+            StartCoroutine(FadeObject(playerHit, true));
             numOfLives -= 1;
             Debug.Log(string.Format("NUM OF LIVES: {0}", numOfLives));
             if (numOfLives == 0)

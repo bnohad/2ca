@@ -6,7 +6,8 @@ public class EnemiesController : MonoBehaviour {
     public static EnemiesController instance;
     public GameObject[] enemies;
 
-    //public GameObject enemy;
+    private const float X_POS_OFFSET = 0.05f;
+    private float lastSpawxPositionX;
     private float spawnTime = 3f;
     private float spawnDelay = 3f;
     private int lastDiffuclty;
@@ -38,6 +39,7 @@ public class EnemiesController : MonoBehaviour {
 
     public void InitNewGame()
     {
+        lastSpawxPositionX = 0;
         numOfCurrSpwans = 0;
         numOfTotalSpwans = 3;
         lastDiffuclty = 1;
@@ -89,14 +91,15 @@ public class EnemiesController : MonoBehaviour {
 
     private void Spawn()
     {
-        if (GameService.GetInstance().IsAlive())
+        if (GameService.GetInstance().IsAlive() && !GameService.GetInstance().GetIsPaused())
         {
             float spawnPointX = getRandomXPosition();
             Vector2 position = new Vector2(spawnPointX, 12);
             GameObject enemyObj = (GameObject)Instantiate(enemies[RandomEnemy()], position, Quaternion.identity);
             enemyObj.SetActive(true);
-            numOfCurrSpwans--;
         }
+
+        numOfCurrSpwans--;
     }
 
     public GameObject GetNearestEnemy(Touch[] touches)
@@ -139,18 +142,30 @@ public class EnemiesController : MonoBehaviour {
         Vector3 randomPos3;
         float randomX;
 
-        if (Random.Range(0, 1f) >= 0.5f)
+        if (randomBool())
         {
             randomX = Random.Range(Screen.width * 0.55f, Screen.width * 0.95f);
+            
         }
         else
         {
-            randomX = Random.Range(0.05f, Screen.width * 0.45f);
+            randomX = Random.Range(Screen.width * 0.05f, Screen.width * 0.45f);
         }
 
+        if(Mathf.Abs(randomX - lastSpawxPositionX) <= X_POS_OFFSET)
+        {
+            randomX -= X_POS_OFFSET * 2;
+        }
+
+        lastSpawxPositionX = randomX;
         randomPos3 = Camera.main.ScreenToWorldPoint(new Vector3(randomX,0,0));
 
         return randomPos3.x;
+    }
+
+    private bool randomBool()
+    {
+        return Random.Range(0, 10f) >= 5f;
     }
 
     private int RandomEnemy()
