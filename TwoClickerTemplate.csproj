@@ -75,18 +75,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\BackgroundScript.cs" />
-    <Compile Include="Assets\CreditsButton.cs" />
-    <Compile Include="Assets\EnemiesController.cs" />
-    <Compile Include="Assets\Enemy.cs" />
-    <Compile Include="Assets\GameService.cs" />
-    <Compile Include="Assets\GoodTextScript.cs" />
-    <Compile Include="Assets\GunsScript.cs" />
-    <Compile Include="Assets\LivesController.cs" />
-    <Compile Include="Assets\PauseButton.cs" />
-    <Compile Include="Assets\PlayerController.cs" />
-    <Compile Include="Assets\SceneMovement.cs" />
-    <Compile Include="Assets\StartButton.cs" />
+    <Compile Include="Assets\Scripts\BackgroundScript.cs" />
+    <Compile Include="Assets\Scripts\CreditsButton.cs" />
+    <Compile Include="Assets\Scripts\EnemiesController.cs" />
+    <Compile Include="Assets\Scripts\Enemy.cs" />
+    <Compile Include="Assets\Scripts\GameService.cs" />
+    <Compile Include="Assets\Scripts\GoodTextScript.cs" />
+    <Compile Include="Assets\Scripts\GunsScript.cs" />
+    <Compile Include="Assets\Scripts\LivesController.cs" />
+    <Compile Include="Assets\Scripts\PauseButton.cs" />
+    <Compile Include="Assets\Scripts\PlayerController.cs" />
+    <Compile Include="Assets\Scripts\SceneMovement.cs" />
+    <Compile Include="Assets\Scripts\StartButton.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
