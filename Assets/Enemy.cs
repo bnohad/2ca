@@ -22,8 +22,13 @@ public class Enemy : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (GameService.GetInstance().IsAlive())
+        if (GameService.GetInstance().IsAlive() && !GameService.GetInstance().GetIsPaused())
         {
+            if(animator.speed < 1)
+            {
+                animator.speed = 1;
+            }
+
             ApplyGameSpeedToEnemy();
 
             if (IsAlive() && hasEnteredView && !GameService.GetInstance().IsObjectInWorldView(gameObject))
@@ -38,15 +43,29 @@ public class Enemy : MonoBehaviour {
             {
                 Destroy(gameObject);
             }
+            else if(!IsAlive())
+            {
+                wasSpeedSet = false;
+                SetSpeed(GameService.GetInstance().GetSceneSpeed());
+            }
+        }
+        else if(GameService.GetInstance().GetIsPaused())
+        {
+            if(speed > 0)
+            {
+                wasSpeedSet = false;
+                SetSpeed(0);
+                animator.speed = 0;
+            }
         }
         else
         {
             //player dead
             if (IsAlive())
             {
-                animator.speed = 0.2f;
                 wasSpeedSet = false;
                 SetSpeed(0.2f);
+                animator.speed = 0.2f;
             }
             else
             {
@@ -78,7 +97,7 @@ public class Enemy : MonoBehaviour {
 
     public void ApplyGameSpeedToEnemy()
     {
-        if (speed < GameService.GetInstance().GetGameSpeed() && isAlive)
+        if (speed < GameService.GetInstance().GetGameSpeed() && IsAlive())
         {
             wasSpeedSet = false;
             speed = GameService.GetInstance().GetGameSpeed();
@@ -122,6 +141,7 @@ public class Enemy : MonoBehaviour {
         {
             wasSpeedSet = true;
             rb2d.velocity = new Vector2(0, -1 * speed);
+            this.speed = speed;
         }
     }
 

@@ -17,7 +17,7 @@ public class BackgroundScript : MonoBehaviour {
         bc2d = GetComponent<BoxCollider2D>();
 
         backgroundHeight = bc2d.size.y;
-        backgroundHeightOffset = backgroundHeight / 3;
+        //backgroundHeightOffset = backgroundHeight / 2;
 
         repositionOffset = new Vector2(0, backgroundHeight * 2f);
 

@@ -14,9 +14,14 @@ public class PlayerController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        if (service.IsAlive())
+        if (service.IsAlive() && !service.GetIsPaused())
         {
             Touch[] touchPoints = Input.touches;
+
+            if(animator.speed < 1)
+            {
+                animator.speed = 1;
+            }
 
             if (GameService.GetInstance().IsTapRight(touchPoints) && GameService.GetInstance().IsTapLeft(touchPoints))
             {
@@ -35,6 +40,10 @@ public class PlayerController : MonoBehaviour {
             {
 
             }
+        }
+        else if(service.IsAlive() && service.GetIsPaused())
+        {
+            animator.speed = 0;
         }
         else
         {

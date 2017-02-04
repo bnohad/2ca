@@ -51,7 +51,7 @@ public class EnemiesController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (GameService.GetInstance().IsAlive())
+        if (GameService.GetInstance().IsAlive() && !GameService.GetInstance().GetIsPaused())
         {
             if (GameService.GetInstance().GetGameDiffuclty() != lastDiffuclty)
             {
@@ -64,11 +64,11 @@ public class EnemiesController : MonoBehaviour {
                 }
             }
 
-            if (numOfCurrSpwans < numOfTotalSpwans)
-            {
-                numOfCurrSpwans++;
+//            if (numOfCurrSpwans < numOfTotalSpwans)
+//            {
+ //               numOfCurrSpwans++;
                 StartCoroutine(waitAndSpawn());
-            }
+ //           }
 
             //kill nearest enemy
             GameObject nearestEnemy = GetNearestEnemy(Input.touches);
@@ -89,7 +89,7 @@ public class EnemiesController : MonoBehaviour {
 
     private void Spawn()
     {
-        if (GameService.GetInstance().IsAlive() && !GameService.GetInstance().GetIsPaused())
+        if (GameService.GetInstance().IsAlive())
         {
             float spawnPointX = getRandomXPosition();
             Vector2 position = new Vector2(spawnPointX, 12);
@@ -122,8 +122,12 @@ public class EnemiesController : MonoBehaviour {
 
     IEnumerator waitAndSpawn()
     {
-        yield return new WaitForSeconds(spawnDelay);
-        Spawn();
+        if (numOfCurrSpwans < numOfTotalSpwans)
+        {
+            numOfCurrSpwans++;
+            yield return new WaitForSeconds(spawnDelay);
+            Spawn();
+        }
     }
 
     private float getRandomXPosition()

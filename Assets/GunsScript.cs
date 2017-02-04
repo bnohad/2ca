@@ -15,7 +15,7 @@ public class GunsScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (GameService.GetInstance().IsAlive())
+        if (GameService.GetInstance().IsAlive() && !GameService.GetInstance().GetIsPaused())
         {
             if (isRight && GameService.GetInstance().IsTapRight(Input.touches))
             {

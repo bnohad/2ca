@@ -36,6 +36,11 @@ public class GameService : MonoBehaviour {
 
     private GameObject creditsScreen;
 
+    private GameObject pauseScreen;
+    private GameObject pauseBackground;
+    private GameObject continueButton;
+    private GameObject pauseButton;
+
     private GUIStyle scoreStyle;
     private GUIStyle gameoverStyle;
     private Rect scoreRect;
@@ -67,8 +72,8 @@ public class GameService : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
-        initGUIStyles();
         InitGameObjects();
+        initGUIStyles();
         InitGameTapControl();
 
         IsAlive(false);
@@ -83,13 +88,18 @@ public class GameService : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (IsAlive())
+        if (IsAlive() && !GetIsPaused())
         {
             SceneMovement.GetInstance().SetSpeed(gameSpeed);
             updateGameDiffuclty();
         }
         else
         {
+            if(GetIsPaused())
+            {
+
+            }
+
             SceneMovement.GetInstance().SetSpeed(0);
         }
 	}
@@ -148,13 +158,13 @@ public class GameService : MonoBehaviour {
         goodText = GameObject.Find("GoodText");
 
         gameoverScreen = GameObject.Find("MenuScreen");
-        //startBtn = GameObject.Find("StartButton");
-        //creditsBtn = GameObject.Find("CreditsButton");
+
+        pauseScreen = GameObject.Find("PauseScreen");
+    //    pauseBackground = GameObject.Find("PauseBackground");
+        pauseButton = GameObject.Find("PauseButton");
+        continueButton = GameObject.Find("ContinueButton");
 
         menuScreen = GameObject.Find("OpenScreen");
-        //menuStartBtn = GameObject.Find("StartButtonOpen");
-        //menuCreditsBtn = GameObject.Find("CreditsButtonOpen");
-
         creditsScreen = GameObject.Find("CreditsScreen");
 
         goodText.SetActive(false);
@@ -366,6 +376,11 @@ public class GameService : MonoBehaviour {
             gameoverScreen.SetActive(false);
             menuScreen.SetActive(false);
         }
+        else if(GetIsPaused())
+        {
+            pauseScreen.SetActive(true);
+            pauseButton.SetActive(false);
+        }
         else
         {
             menuScreen.SetActive(toggle);
@@ -373,6 +388,8 @@ public class GameService : MonoBehaviour {
             //menuCreditsBtn.SetActive(toggle);
             creditsScreen.SetActive(toggle);
             gameoverScreen.SetActive(toggle);
+            pauseScreen.SetActive(false);
+            pauseButton.SetActive(true);
             //startBtn.SetActive(toggle);
             //creditsBtn.SetActive(toggle);
         }
@@ -443,6 +460,8 @@ public class GameService : MonoBehaviour {
     public void SetIsPaused(bool state)
     {
         isPaused = state;
+
+        toggleMenu(state);
     }
 
     public void ShowCredits()

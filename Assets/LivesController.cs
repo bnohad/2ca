@@ -5,8 +5,10 @@ public class LivesController : MonoBehaviour {
 
     private GameObject[] lives;
     private int lastNumOfLives;
+    private float speed;
 	// Use this for initialization
 	void Start () {
+        speed = 1f;
         lives = new GameObject[3];
 
         lives[0] = GameObject.Find("life1");
@@ -23,6 +25,14 @@ public class LivesController : MonoBehaviour {
             lastNumOfLives = GameService.GetInstance().GetNumOfLives();
 
             updateLivesIndicator(lastNumOfLives);
+        }
+        else if(GameService.GetInstance().GetIsPaused() && speed > 0)
+        {
+            changeAnimationSpeed(0);
+        }
+        else if(!GameService.GetInstance().GetIsPaused() && speed < 1f)
+        {
+            changeAnimationSpeed(1f);
         }        
 	}
 
@@ -43,6 +53,16 @@ public class LivesController : MonoBehaviour {
 
                 //lives[i].SetActive(false);
             }
+        }
+    }
+
+    private void changeAnimationSpeed(float speed)
+    {
+        this.speed = speed;
+
+        foreach(GameObject life in lives)
+        {
+            life.GetComponent<Animator>().speed = speed;
         }
     }
 
