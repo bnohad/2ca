@@ -121,7 +121,7 @@ public class GameService : MonoBehaviour {
         gameoverStyle.fontStyle = FontStyle.Bold;
 
         scoreRect = new Rect(10, 10, 100, 20);
-        ammoRect = new Rect(90, 10, 100, 20);
+        ammoRect = new Rect(200, 10, 100, 20);
         gameoverRect = new Rect(0, Screen.height/2, Screen.width/4, Screen.height/2);
     }
 
@@ -393,7 +393,7 @@ public class GameService : MonoBehaviour {
 
         toggleMenu(false);
         EnemiesController.GetInstance().InitNewGame();
-        ammo.InitAmmo(30);
+        ammo.InitAmmo(20);
         numOfKills = 0;
     }
 
