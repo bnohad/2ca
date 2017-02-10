@@ -66,16 +66,12 @@ public class EnemiesController : MonoBehaviour {
                 }
             }
 
-//            if (numOfCurrSpwans < numOfTotalSpwans)
-//            {
- //               numOfCurrSpwans++;
-                StartCoroutine(waitAndSpawn());
- //           }
+            StartCoroutine(waitAndSpawn());
 
             //kill nearest enemy
             GameObject nearestEnemy = GetNearestEnemy(Input.touches);
 
-            if (GameService.GetInstance().IsObjectInTapArea(nearestEnemy, Input.touches))
+            if (GameService.GetInstance().IsObjectInTapArea(nearestEnemy, Input.touches) && AmmoController.GetInstance().HasAmmo())
             {
                 nearestEnemy.GetComponent<Enemy>().Kill();
                 GameService.GetInstance().addToPoints(1);
@@ -97,16 +93,17 @@ public class EnemiesController : MonoBehaviour {
             Vector2 position = new Vector2(spawnPointX, 12);
             GameObject enemyObj = (GameObject)Instantiate(enemies[RandomEnemy()], position, Quaternion.identity);
             enemyObj.SetActive(true);
+
+            numOfCurrSpwans--;
         }
 
-        numOfCurrSpwans--;
     }
 
     public GameObject GetNearestEnemy(Touch[] touches)
     {
         GameObject nearestEnemy = null;
 
-        //Debug.Log(string.Format("NUM OF ENEMIES ON SCREEN {0}", GameObject.FindGameObjectsWithTag("enemy").Length));
+        Debug.Log(string.Format("NUM OF ENEMIES ON SCREEN {0}", GameObject.FindGameObjectsWithTag("enemy").Length));
 
             foreach (GameObject currEnemy in GameObject.FindGameObjectsWithTag("enemy"))
             {
@@ -125,7 +122,7 @@ public class EnemiesController : MonoBehaviour {
 
     IEnumerator waitAndSpawn()
     {
-        if(!GameService.GetInstance().GetIsPaused())
+        if(GameService.GetInstance().IsAlive() && !GameService.GetInstance().GetIsPaused())
         {
             if (numOfCurrSpwans < numOfTotalSpwans)
             {

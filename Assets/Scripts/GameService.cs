@@ -44,14 +44,14 @@ public class GameService : MonoBehaviour {
 
     private GUIStyle scoreStyle;
     private GUIStyle gameoverStyle;
+    private Rect ammoRect;
     private Rect scoreRect;
     private Rect gameoverRect;
 
-
-    //private ArrayList enemies;
-
     private Rect leftScreenSide;
     private Rect rightScreenSide;
+
+    private static AmmoController ammo;
 
     public GameService()
     {
@@ -63,6 +63,7 @@ public class GameService : MonoBehaviour {
         if (IsAlive())
         {
             GUI.Label(scoreRect, string.Format("Score: {0}", numOfKills), scoreStyle);
+            GUI.Label(ammoRect, string.Format("Ammo: {0}", ammo.GetAmmoCount()), scoreStyle);
         }
         else if (isGameover)
         {
@@ -120,6 +121,7 @@ public class GameService : MonoBehaviour {
         gameoverStyle.fontStyle = FontStyle.Bold;
 
         scoreRect = new Rect(10, 10, 100, 20);
+        ammoRect = new Rect(90, 10, 100, 20);
         gameoverRect = new Rect(0, Screen.height/2, Screen.width/4, Screen.height/2);
     }
 
@@ -132,6 +134,7 @@ public class GameService : MonoBehaviour {
             levelUpMultiplyer++;
             wasNumOfKillesChanged = false;
             SetGameDiffuclty(currDiffuclty + 1);
+            ammo.AddBullets(currDiffuclty * 3);
 
             if (numOfKills > 0)
             {
@@ -155,6 +158,11 @@ public class GameService : MonoBehaviour {
 
     private void InitGameObjects()
     {
+        if(ammo == null)
+        {
+            ammo = new AmmoController();
+        }
+
         player = GameObject.Find(PLAYER_OBJECT);
         playerHit = GameObject.Find("Hit");
 
@@ -385,7 +393,7 @@ public class GameService : MonoBehaviour {
 
         toggleMenu(false);
         EnemiesController.GetInstance().InitNewGame();
-        
+        ammo.InitAmmo(30);
         numOfKills = 0;
     }
 
@@ -396,14 +404,10 @@ public class GameService : MonoBehaviour {
             menuScreen.SetActive(toggle);
             gameoverScreen.SetActive(false);
             creditsScreen.SetActive(false);
-            //menuStartBtn.SetActive(toggle);
-            //menuCreditsBtn.SetActive(toggle);
         }
         else if (isGameover)
         {
             gameoverScreen.SetActive(toggle);
-            //startBtn.SetActive(toggle);
-            //creditsBtn.SetActive(toggle);
         }
         else if (isCredits)
         {
@@ -419,17 +423,20 @@ public class GameService : MonoBehaviour {
         else
         {
             menuScreen.SetActive(toggle);
-            //menuStartBtn.SetActive(toggle);
-            //menuCreditsBtn.SetActive(toggle);
             creditsScreen.SetActive(toggle);
             gameoverScreen.SetActive(toggle);
             pauseScreen.SetActive(false);
             pauseButton.SetActive(true);
-            //startBtn.SetActive(toggle);
-            //creditsBtn.SetActive(toggle);
         }
 
         player.SetActive(!toggle);
+    }
+
+    public bool IsPlaying()
+    {
+        bool ret = IsAlive() && !GetIsPaused() && !isGameover;
+
+        return ret;
     }
 
     public void IsAlive(bool status)
