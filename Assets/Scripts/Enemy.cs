@@ -86,6 +86,8 @@ public class Enemy : MonoBehaviour {
         Debug.Log("Enemy Dead");
         animator.SetTrigger("isDead");
         GetComponent<SpriteRenderer>().sortingOrder = 0;
+
+        gameObject.transform.Find("Shadow").gameObject.SetActive(false);
     }
 
     public void HitPlayer()
