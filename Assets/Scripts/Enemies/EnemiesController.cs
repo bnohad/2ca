@@ -31,6 +31,23 @@ public class EnemiesController : MonoBehaviour {
         }
     }
 
+    public int ParalelEnemis
+    {
+        get
+        {
+            return numOfTotalSpwans;
+        }
+        set
+        {
+            numOfTotalSpwans = value;
+        }
+    }
+
+    public bool WaveFinished()
+    {
+        return SpawnCount == 0;
+    }
+
     public EnemiesController()
     {
         if (instance == null)

@@ -20,6 +20,7 @@ public class GameService : MonoBehaviour {
     private int gameDiffuclty;
     private int numOfKills;
     private int numOfLives;
+    private int numOfEnemies;
     private int levelUpMultiplyer;
 
     private GameObject player;
@@ -95,7 +96,14 @@ public class GameService : MonoBehaviour {
         if (IsAlive() && !GetIsPaused())
         {
             SceneMovement.GetInstance().SetSpeed(gameSpeed);
-            updateGameDiffuclty();
+
+            if(wave.WasFinished())
+            {
+                goodText.SetActive(true);
+                numOfEnemies += 1;
+                wave.InitNextWave(numOfEnemies, numOfEnemies, 0, 0);
+                wave.StartWave();
+            }
         }
         else
         {
@@ -398,6 +406,7 @@ public class GameService : MonoBehaviour {
     public void StartNewGame()
     {
         numOfLives = 3;
+        numOfEnemies = 10;
         SetGameDiffuclty(1);
         SetGameSpeed(5f);
         levelUpMultiplyer = 5;

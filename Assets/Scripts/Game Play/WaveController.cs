@@ -6,6 +6,7 @@ public class WaveController {
     //public const int ENEMIES_COUNT_INIT = 10;
 
     private static WaveController _instance;
+    private bool _finished;
     private int _wave;
 
     private EnemiesController enemiesCtrl;
@@ -13,6 +14,17 @@ public class WaveController {
     private GameService gameService;
 
     public bool Ongoing { get; private set; }
+    public bool Finished
+    {
+        get
+        {
+            return _finished;
+        }
+        set
+        {
+            _finished = value;
+        }
+    }
     public int Wave { get; set; }
     
     public WaveController()
@@ -43,11 +55,18 @@ public class WaveController {
 
         enemiesCtrl.SpawnCount = numOfEnemies;
         ammoCtrl.AddBullets(extraAmmo);
+
+        if(numOfEnemies % 7 == 0)
+        {
+            enemiesCtrl.ParalelEnemis += 1;
+        }
+        
     }
 
     public void StartWave()
     {
         Ongoing = true;
+        Finished = false;
         Debug.Log(string.Format("Started Wave: {0}", Wave));
     }
 
@@ -58,13 +77,11 @@ public class WaveController {
 
     }
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    public bool WasFinished()
+    {
+
+        Finished = enemiesCtrl.WaveFinished();
+        
+        return Finished;
+    }
 }
