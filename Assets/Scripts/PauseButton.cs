@@ -11,11 +11,15 @@ public class PauseButton : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetKeyUp(KeyCode.Escape))
+        if(GameService.GetInstance().IsPlaying() || GameService.GetInstance().GetIsPaused())
         {
-            Debug.Log("CLICKED ESC!");
-            togglePause();
+            if (Input.GetKeyUp(KeyCode.Escape))
+            {
+                Debug.Log("CLICKED ESC!");
+                togglePause();
+            }
         }
+        
     }
 
     void OnMouseDown()
