@@ -143,6 +143,15 @@ public class GameService : MonoBehaviour {
         }
     }
 
+    private void InitNextWave()
+    {
+        // Set Next Amount Of Enemmies
+
+        // Give player extra ammo
+
+        // Set diffuclty
+    }
+
     private void InitGameTapControl()
     {
         Vector2 middle = TransformPixelToWorldPoint(new Vector2(1, 1));
