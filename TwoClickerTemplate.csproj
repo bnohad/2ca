@@ -81,6 +81,7 @@
     <Compile Include="Assets\Scripts\Game Play\GoodTextScript.cs" />
     <Compile Include="Assets\Scripts\Game Play\LivesController.cs" />
     <Compile Include="Assets\Scripts\Game Play\SceneMovement.cs" />
+    <Compile Include="Assets\Scripts\Game Play\WaveController.cs" />
     <Compile Include="Assets\Scripts\GameService.cs" />
     <Compile Include="Assets\Scripts\Guns\AmmoController.cs" />
     <Compile Include="Assets\Scripts\Guns\GunsScript.cs" />
