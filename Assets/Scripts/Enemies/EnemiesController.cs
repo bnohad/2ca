@@ -3,38 +3,64 @@ using System.Collections;
 
 public class EnemiesController : MonoBehaviour {
 
-    public static EnemiesController instance;
     public GameObject[] enemies;
+
+    public static EnemiesController instance;
 
     private const float X_POS_OFFSET = 0.05f;
     private float lastSpawxPositionX;
     private float spawnTime = 3f;
     private float spawnDelay = 3f;
-    private int lastDiffuclty;
     private int numOfCurrSpwans;
     private int numOfTotalSpwans;
-
+    
     private bool didLastShotHitRight;
     private bool didLastShotHitLeft;
 
-    //private Transform[] spawnPoints;
-
-	// Use this for initialization
-	void Start () {
-        enemies = GameObject.FindGameObjectsWithTag("enemy");
-        
-        foreach (GameObject currEnemy in enemies)
+    private int _spawnCount;
+    public int SpawnCount {
+        get
         {
-            currEnemy.SetActive(false);
+            return _spawnCount;
         }
+        set {
+            if(value >= 0)
+            {
+                _spawnCount = value;
+            }
+        }
+    }
 
-        //Debug.Log(string.Format("NUM OF ENEMIES IS {0}",enemies.Length));
-
+    public EnemiesController()
+    {
         if (instance == null)
         {
             instance = this;
         }
-        //InvokeRepeating("Spawn", spawnTime, spawnTime);
+    }
+
+    private void fetchAllEnemyGameObjects()
+    {
+        // List of all possible enemies
+        enemies = GameObject.FindGameObjectsWithTag("enemy");
+
+        foreach (GameObject currEnemy in enemies)
+        {
+            currEnemy.SetActive(false);
+        }
+    }
+
+    public void DestroyAllEnemies()
+    {
+        foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("enemy"))
+        {
+            Destroy(enemy);
+        }
+    }
+
+	// Use this for initialization
+	void Start () {
+        fetchAllEnemyGameObjects();
 	}
 
     public void InitNewGame()
@@ -42,32 +68,17 @@ public class EnemiesController : MonoBehaviour {
         lastSpawxPositionX = 0;
         numOfCurrSpwans = 0;
         numOfTotalSpwans = 3;
-        lastDiffuclty = 1;
+//        lastDiffuclty = 1;
         spawnDelay = spawnTime;
 
-        foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("enemy"))
-        {
-            Destroy(enemy);
-        }
+        DestroyAllEnemies();
     }
 	
 	// Update is called once per frame
 	void Update () {
-        if (GameService.GetInstance().IsAlive() && !GameService.GetInstance().GetIsPaused())
+        if (GameService.GetInstance().IsPlaying() && WaveController.GetInstance().Ongoing)
         {
-            if (GameService.GetInstance().GetGameDiffuclty() != lastDiffuclty)
-            {
-                lastDiffuclty = GameService.GetInstance().GetGameDiffuclty();
-                
-
-                if (lastDiffuclty % 3 == 0 && numOfTotalSpwans < 7)
-                {
-                    numOfTotalSpwans++;
-                }
-            }
-
             StartCoroutine(waitAndSpawn());
-
             //kill nearest enemy
             GameObject nearestEnemy = GetNearestEnemy(Input.touches);
 
@@ -75,9 +86,13 @@ public class EnemiesController : MonoBehaviour {
             {
                 nearestEnemy.GetComponent<Enemy>().Kill();
                 GameService.GetInstance().addToPoints(1);
-                //numOfCurrSpwans--;
             }
+
+
         }
+        //Debug.Log(string.Format("{0}, {1}", GameService.GetInstance().IsPlaying(), WaveController.GetInstance().Ongoing));
+            
+        
 	}
 
     public static EnemiesController GetInstance()
@@ -87,7 +102,7 @@ public class EnemiesController : MonoBehaviour {
 
     private void Spawn()
     {
-        if (GameService.GetInstance().IsAlive() && !GameService.GetInstance().GetIsPaused())
+        if (GameService.GetInstance().IsPlaying())
         {
             float spawnPointX = getRandomXPosition();
             Vector2 position = new Vector2(spawnPointX, 12);
@@ -95,8 +110,8 @@ public class EnemiesController : MonoBehaviour {
             enemyObj.SetActive(true);
 
             numOfCurrSpwans--;
+            SpawnCount--;
         }
-
     }
 
     public GameObject GetNearestEnemy(Touch[] touches)
@@ -122,12 +137,11 @@ public class EnemiesController : MonoBehaviour {
 
     IEnumerator waitAndSpawn()
     {
-        if(GameService.GetInstance().IsAlive() && !GameService.GetInstance().GetIsPaused())
+        if(GameService.GetInstance().IsPlaying())
         {
-            if (numOfCurrSpwans < numOfTotalSpwans)
+            if (numOfCurrSpwans < numOfTotalSpwans && SpawnCount > 0)
             {
                 numOfCurrSpwans++;
-                spawnDelay = Random.Range(spawnTime / 2, spawnTime - lastDiffuclty * 0.05f);
                 yield return new WaitForSeconds(spawnDelay);
                 Spawn();
             }
@@ -167,17 +181,6 @@ public class EnemiesController : MonoBehaviour {
 
     private int RandomEnemy()
     {
-        int numOfEnemies;
-
-        if (enemies.Length > 0)
-        {
-            numOfEnemies = enemies.Length;
-        }
-        else
-        {
-            numOfEnemies = 0;
-        }
-
-        return Random.Range(0, numOfEnemies);
+        return Random.Range(0, enemies.Length);
     }
 }

@@ -51,7 +51,8 @@ public class GameService : MonoBehaviour {
     private Rect leftScreenSide;
     private Rect rightScreenSide;
 
-    private static AmmoController ammo;
+    private AmmoController ammo;
+    private WaveController wave;
 
     public GameService()
     {
@@ -77,6 +78,7 @@ public class GameService : MonoBehaviour {
         InitGameObjects();
         initGUIStyles();
         InitGameTapControl();
+
 
         IsAlive(false);
         isMenu = true;
@@ -170,6 +172,13 @@ public class GameService : MonoBehaviour {
         if(ammo == null)
         {
             ammo = new AmmoController();
+        }
+
+        if(wave == null)
+        {
+            wave = new WaveController();
+            wave = WaveController.GetInstance();
+            wave.Wave = 3;
         }
 
         player = GameObject.Find(PLAYER_OBJECT);
@@ -402,7 +411,11 @@ public class GameService : MonoBehaviour {
 
         toggleMenu(false);
         EnemiesController.GetInstance().InitNewGame();
-        ammo.InitAmmo(20);
+        ammo.InitAmmo(0);
+
+        wave.InitNextWave(10, 15, 0, 0);
+        wave.StartWave();
+
         numOfKills = 0;
     }
 
@@ -444,6 +457,8 @@ public class GameService : MonoBehaviour {
     public bool IsPlaying()
     {
         bool ret = IsAlive() && !GetIsPaused() && !isGameover;
+
+        //Debug.Log(string.Format("ALIVE: {0} PAUSED: {1} GAMEOVER: {2}, ALL: {3}", IsAlive(), GetIsPaused(), isGameover, ret));
 
         return ret;
     }

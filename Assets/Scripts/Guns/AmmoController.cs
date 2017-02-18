@@ -3,16 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class AmmoController : MonoBehaviour {
-    private int ammo;
+    public int ammo;
     private static AmmoController instance;
-    private static GameService gameService;
-
+    
     public AmmoController()
     {
         if (instance == null)
         {
             instance = this;
-            gameService = GameService.GetInstance();
         }
     }
 

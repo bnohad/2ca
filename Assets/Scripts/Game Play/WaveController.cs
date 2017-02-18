@@ -2,19 +2,34 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WaveController : MonoBehaviour {
+public class WaveController {
+    //public const int ENEMIES_COUNT_INIT = 10;
+
     private static WaveController _instance;
     private int _wave;
 
-    public static WaveController Instance { get; private set; }
+    private EnemiesController enemiesCtrl;
+    private AmmoController ammoCtrl;
+    private GameService gameService;
+
+    public bool Ongoing { get; private set; }
     public int Wave { get; set; }
     
     public WaveController()
     {
-        if(Instance == null)
+        if(_instance == null)
         {
-            Instance = this;
+            _instance = this;
+
+            enemiesCtrl = EnemiesController.GetInstance();
+            ammoCtrl = AmmoController.GetInstance();
+            gameService = GameService.GetInstance();
         }
+    }
+
+    public static WaveController GetInstance()
+    {
+        return _instance;
     }
 
     public void Init()
@@ -24,6 +39,22 @@ public class WaveController : MonoBehaviour {
 
     public void InitNextWave(int numOfEnemies, int extraAmmo, float gameSpeed, int gameDiffuclty)
     {
+        Ongoing = false;
+
+        enemiesCtrl.SpawnCount = numOfEnemies;
+        ammoCtrl.AddBullets(extraAmmo);
+    }
+
+    public void StartWave()
+    {
+        Ongoing = true;
+        Debug.Log(string.Format("Started Wave: {0}", Wave));
+    }
+
+    public void NextWave()
+    {
+        Wave++;
+
 
     }
 
